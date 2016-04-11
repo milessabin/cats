@@ -14,7 +14,8 @@ lazy val scoverageSettings = Seq(
 
 lazy val buildSettings = Seq(
   organization := "org.typelevel",
-  scalaVersion := "2.11.7",
+  resolvers += "scalatl" at "https://milessabin.com/scalatl",
+  scalaVersion := "2.11.8-tl",
   crossScalaVersions := Seq("2.10.6", "2.11.7")
 )
 
@@ -34,11 +35,10 @@ lazy val commonSettings = Seq(
     "org.spire-math" %%% "algebra" % "0.3.1",
     "org.spire-math" %%% "algebra-std" % "0.3.1",
     "org.typelevel" %%% "machinist" % "0.4.1",
-    compilerPlugin("org.scalamacros" %% "paradise" % "2.1.0-M5" cross CrossVersion.full),
+    compilerPlugin("org.scalamacros" % "paradise_2.11.8" % "2.1.0"),
     compilerPlugin("org.spire-math" %% "kind-projector" % "0.6.3")
   ),
-  parallelExecution in Test := false,
-  scalacOptions in (Compile, doc) := (scalacOptions in (Compile, doc)).value.filter(_ != "-Xfatal-warnings")
+  parallelExecution in Test := false
 ) ++ warnUnusedImport
 
 lazy val commonJsSettings = Seq(
@@ -69,7 +69,6 @@ lazy val docSettings = Seq(
   ghpagesNoJekyll := false,
   siteMappings += file("CONTRIBUTING.md") -> "contributing.md",
   scalacOptions in (ScalaUnidoc, unidoc) ++= Seq(
-    "-Xfatal-warnings",
     "-doc-source-url", scmInfo.value.get.browseUrl + "/tree/master€{FILE_PATH}.scala",
     "-sourcepath", baseDirectory.in(LocalRootProject).value.getAbsolutePath,
     "-diagrams"
@@ -119,7 +118,6 @@ lazy val macros = crossProject.crossType(CrossType.Pure)
   .settings(catsSettings:_*)
   .jsSettings(commonJsSettings:_*)
   .jvmSettings(commonJvmSettings:_*)
-  .settings(scalacOptions := scalacOptions.value.filter(_ != "-Xfatal-warnings"))
 
 lazy val macrosJVM = macros.jvm
 lazy val macrosJS = macros.js
@@ -299,8 +297,8 @@ lazy val scalaMacroDependencies: Seq[Setting[_]] = Seq(
       // in Scala 2.10, quasiquotes are provided by macro paradise
       case Some((2, 10)) =>
         Seq(
-          compilerPlugin("org.scalamacros" %% "paradise" % "2.0.1" cross CrossVersion.full),
-              "org.scalamacros" %% "quasiquotes" % "2.0.1" cross CrossVersion.binary
+          compilerPlugin("org.scalamacros" % "paradise_2.11.8" % "2.0.1"),
+              "org.scalamacros" %% "quasiquotes_2.11.8" % "2.0.1"
         )
     }
   }
@@ -315,7 +313,6 @@ lazy val commonScalacOptions = Seq(
   "-language:implicitConversions",
   "-language:experimental.macros",
   "-unchecked",
-  "-Xfatal-warnings",
   "-Xlint",
   "-Yinline-warnings",
   "-Yno-adapted-args",
