@@ -14,8 +14,9 @@ lazy val scoverageSettings = Seq(
 
 lazy val buildSettings = Seq(
   organization := "org.typelevel",
-  resolvers += "scalatl" at "https://milessabin.com/scalatl",
-  scalaVersion := "2.11.8-tl",
+  resolvers += "scalatl" at "http://milessabin.com/scalatl",
+  scalaVersion := "2.11.8-tl-201604131941",
+  scalaBinaryVersion := "2.11",
   crossScalaVersions := Seq("2.10.6", "2.11.7")
 )
 
@@ -319,7 +320,8 @@ lazy val commonScalacOptions = Seq(
   "-Ywarn-dead-code",
   "-Ywarn-numeric-widen",
   "-Ywarn-value-discard",
-  "-Xfuture"
+  "-Xfuture",
+  "-Yhigher-order-unification"
 )
 
 lazy val sharedPublishSettings = Seq(
